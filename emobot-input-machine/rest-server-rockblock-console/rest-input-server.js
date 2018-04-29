@@ -30,8 +30,8 @@ app.post('/sms/api/v1',function(req,response,next){
 
 	    request(options, function (error, response, body) {
 	    if (error) throw new Error(error);
-
-	    console.log(body);
+      var obj = JSON.parse(body);
+	    console.log('Main Emotion: ' + obj.document_tone.tones[0].tone_id + ' @ ' + obj.document_tone.tones[0].score);
 	});
 } );
 
