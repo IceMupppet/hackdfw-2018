@@ -15,8 +15,6 @@ app.use(bodyParser.json())
 
 app.post('/sms/api/v1',function(req,response,next){
 
-   var local_source       =req.body.source;
-   var local_data         =req.body.message;
    var local_body         =req.body.Body;
    console.log('New data  ' + local_body);
    response.writeHead(200, {'Content-Type': 'text/html'});
@@ -25,16 +23,15 @@ app.post('/sms/api/v1',function(req,response,next){
    var options = { method: 'POST',
     url: 'https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone',
       qs: { version: '2017-09-21' },
-        headers: 
-             { 'postman-token': '63402e28-abd7-9eee-9e78-b754e1d0b790',
-                    'cache-control': 'no-cache',  'Content-Type': 'text/html', 
-                         authorization: 'Basic MTI0MjRmYTUtNjI1Ny00M2ViLTk2ZjEtZThkMzBiMjUxMWQ4OmlzYXZ2TnR6eTRqNQ==' },
-          body: local_body };
+      headers: {  'postman-token': '63402e28-abd7-9eee-9e78-b754e1d0b790',
+                  'cache-control': 'no-cache',  'Content-Type': 'text/html', 
+                    authorization: 'Basic MTI0MjRmYTUtNjI1Ny00M2ViLTk2ZjEtZThkMzBiMjUxMWQ4OmlzYXZ2TnR6eTRqNQ==' },
+      body: local_body };
 
-	request(options, function (error, response, body) {
+	    request(options, function (error, response, body) {
 	    if (error) throw new Error(error);
 
-	      console.log(body);
+	    console.log(body);
 	});
 } );
 
