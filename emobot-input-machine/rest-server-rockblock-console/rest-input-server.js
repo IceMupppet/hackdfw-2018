@@ -31,9 +31,47 @@ app.post('/sms/api/v1',function(req,response,next){
 	    request(options, function (error, response, body) {
 	    if (error) throw new Error(error);
       var obj = JSON.parse(body);
-	    console.log('Main Emotion: ' + obj.document_tone.tones[0].tone_id + ' @ ' + obj.document_tone.tones[0].score);
+
+      if(0==0){
+          var relayoff = 0;
+      
+    	    console.log('Main Emotion: ' + obj.document_tone.tones[0].tone_id + ' @ ' + obj.document_tone.tones[0].score);
+
+          if(obj.document_tone.tones[0].tone_id.toString() == 'sadness'){
+             var options2 = { method: 'GET', url: 'http://10.9.7.114:2020/api/robots/emobot/commands/sadness'};
+          }
+          else if(obj.document_tone.tones[0].tone_id.toString() == 'joy'){
+             var options2 = { method: 'GET', url: 'http://10.9.7.114:2020/api/robots/emobot/commands/joy'};
+          }
+          else if(obj.document_tone.tones[0].tone_id.toString() == 'anger'){
+             var options2 = { method: 'GET', url: 'http://10.9.7.114:2020/api/robots/emobot/commands/pissed'};
+             relayoff = 1;
+          }
+          else if(obj.document_tone.tones[0].tone_id.toString() == 'fear'){
+             var options2 = { method: 'GET', url: 'http://10.9.7.114:2020/api/robots/emobot/commands/fear'};
+          }
+          else{
+            var options2 = { method: 'GET', url: 'http://10.9.7.114:2020/api/robots/emobot/commands/anger'};
+          }
+
+          request(options2, function (error, response, body) {
+
+          if(relayoff == 1) {
+            setTimeout(function() {
+              var options3 = { method: 'GET', url: 'http://10.9.7.114:2020/api/robots/emobot/commands/relayoff'};
+              request(options3, function (error, response, body) {
+              if (error) throw new Error(error);
+                //  console.log(obj.document_tone.tones[0].tone_id.toString());
+              });
+            }, 5000);
+          }
+          if (error) throw new Error(error);
+            //  console.log(obj.document_tone.tones[0].tone_id.toString());
+          });
+     }
 	});
 } );
+
 
 
 http.createServer(app).listen(app.get('port'), function(){
